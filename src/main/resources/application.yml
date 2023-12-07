@@ -1,0 +1,22 @@
+server:
+  port: 2000
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${JDBC_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
+application:
+  token:
+    validity:
+      hours: 24
