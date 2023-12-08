@@ -11,6 +11,20 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_USER: postgres
       POSTGRES_DB: url_shortener
+  redis:
+    image: redis:7.2.3-alpine3.18
+    command: redis-server --requirepass 123456
+    restart: always
+    volumes:
+      - ~/.docker-conf/redis/data/:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - local
 
 volumes:
   pgdb:
+
+networks:
+  local:
+    driver: bridge

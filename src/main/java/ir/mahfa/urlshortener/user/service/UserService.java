@@ -19,6 +19,7 @@ public class UserService {
     private final PasswordEncoder encoder;
 
     public UserResponseDto addUser(NewUserRequestDto dto) {
+        log.info("UserService, creating new user {} ", dto.username());
         if (repository.findByUsername(dto.username()).isPresent()) {
             throw new BusinessServiceException(ErrorCode.USER_ALREADY_EXIST);
         }
@@ -31,8 +32,9 @@ public class UserService {
         return new UserResponseDto(dto.username());
     }
 
-    public User findByUsername(String currentUserName) {
-        return repository.findByUsername(currentUserName)
+    public User findByUsername(String username) {
+        log.info("UserService, finding user {} ", username);
+        return repository.findByUsername(username)
                 .orElseThrow(() -> new BusinessServiceException(ErrorCode.USER_DOES_NOT_EXIST));
     }
 }
