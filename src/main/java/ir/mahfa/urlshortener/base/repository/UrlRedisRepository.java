@@ -16,10 +16,10 @@ public class UrlRedisRepository {
     @Value(value = "${application.redis_url.days_validity}")
     private int daysValidity;
 
-    public void save(Url url) {
+    public void save(String urlKey, String destination) {
         urlRedisTemplate
                 .opsForValue()
-                .set(url.getUrlKey(), url.getDestination(), Duration.ofDays(daysValidity));
+                .set(urlKey, destination, Duration.ofDays(daysValidity));
     }
 
     public void delete(String urlKey) {
