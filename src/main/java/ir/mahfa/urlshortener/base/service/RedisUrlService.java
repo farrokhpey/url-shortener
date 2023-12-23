@@ -16,9 +16,9 @@ public class RedisUrlService {
 
     private final UrlRedisRepository urlRedisRepository;
 
-    public void save(Url url) {
-        log.info("RedisUrlService, saving {} in redis", url.getDestination());
-        urlRedisRepository.save(url);
+    public void save(String urlKey, String destination) {
+        log.info("RedisUrlService, saving {} in redis", destination);
+        urlRedisRepository.save(urlKey, destination);
     }
 
     public void delete(String urlKey) {

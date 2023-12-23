@@ -69,18 +69,16 @@ public class UrlService {
         log.info("UrlService, getting {} from db", urlKey);
         String destination = redisUrlService.find(urlKey)
                 .orElseGet(() -> getUrlFromDB(urlKey).getDestination());
-        updateUrlData(urlKey);
+        updateUrlData(Url.builder().urlKey(urlKey).destination(destination).build());
         return destination;
     }
 
-    private void updateUrlData(String urlKey) {
-        log.info("UrlService, updating {} usage", urlKey);
+
+    private void updateUrlData(Url url) {
+        log.info("UrlService, updating {} usage", url.getUrlKey());
         new Thread(() -> {
-            Url url = getUrlFromDB(urlKey);
-            url.addViews();
-            url.setLastUse(LocalDate.now());
-            urlRepository.save(url);
-            redisUrlService.save(url);
+            urlRepository.updateViewsAndDateAndGet(url.getUrlKey());
+            redisUrlService.save(url.getUrlKey(), url.getDestination());
         }).start();
     }
 
@@ -126,7 +124,7 @@ public class UrlService {
                 .user(currentUser)
                 .build();
         urlRepository.save(url);
-        redisUrlService.save(url);
+        redisUrlService.save(url.getUrlKey(), url.getDestination());
         return urlKey;
     }
 
